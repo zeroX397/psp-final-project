@@ -11,7 +11,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> ... | Lookup Martini</title>
+    <title> Register Account | Lookup Martini</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -56,11 +56,52 @@ session_start();
         </div>
     </nav>
 
+    <!-- Start Register Form -->
+    <!-- Start Register Form -->
+    <form action="/processes/register.php" method="POST" class="container mt-5" enctype="multipart/form-data">
+        <div class="form-group mb-3">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+        </div>
+        <div class="form-group mb-3">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" placeholder="Enter email" required>
+        </div>
+        <div class="form-group mb-3">
+            <label>Password</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+        </div>
+        <div class="form-group mb-3">
+            <label>Repeat Password</label>
+            <input type="password" name="repeat_password" id="repeat_password" class="form-control"
+                placeholder="Repeat Password" required>
+            <div id="password-error" class="text-danger mt-1" style="display: none;">Passwords do not match.</div>
+        </div>
 
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Profile Picture</label>
+            <input class="form-control" type="file" name="profile_picture" id="formFile" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
 
-</body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+    <script>
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const pass1 = document.getElementById('password').value;
+            const pass2 = document.getElementById('repeat_password').value;
+            const errorDiv = document.getElementById('password-error');
+
+            if (pass1 !== pass2) {
+                e.preventDefault(); // stop form from submitting
+                errorDiv.style.display = 'block';
+            } else {
+                errorDiv.style.display = 'none';
+            }
+        });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+        </script>
+</body>
 
 </html>

@@ -3,6 +3,10 @@
 <?php
 include 'connection.php';
 session_start();
+if (isset($_SESSION['user_id'])) {
+    header("Location: /user");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +15,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> ... | Lookup Martini</title>
+    <title> Login | Lookup Martini</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -56,7 +60,18 @@ session_start();
         </div>
     </nav>
 
-
+    <!-- Start Login Form -->
+    <form action="/processes/login.php" method="POST" class="container mt-5">
+        <div class="form-group mb-3">
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" placeholder="Username" required>
+        </div>
+        <div class="form-group mb-3">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
