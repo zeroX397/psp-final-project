@@ -15,6 +15,10 @@ $description = $_POST['description'] ?? '';
 $price = $_POST['price'] ?? 0;
 $stock = $_POST['stock'] ?? 0;
 
+if ($price < 0 || $stock < 0) {
+    die("Invalid input: price and stock must be >= 0.");
+}
+
 // Fetch current image (for keeping it if no new image is uploaded)
 $stmt = $conn->prepare("SELECT image FROM products WHERE product_id = ?");
 $stmt->bind_param("i", $product_id);

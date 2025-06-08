@@ -101,12 +101,12 @@ $conn->close();
             </div>
             <div class="form-group mb-3">
                 <label>Price</label>
-                <input type="number" step="0.01" name="price" class="form-control"
+                <input type="number" min="0" step="0.01" name="price" class="form-control"
                     value="<?= htmlspecialchars($product['price']) ?>" required>
             </div>
             <div class="form-group mb-3">
                 <label>Stock</label>
-                <input type="number" name="stock" class="form-control"
+                <input type="number" min="0" name="stock" class="form-control"
                     value="<?= htmlspecialchars($product['stock']) ?>" required>
             </div>
             <div class="form-group mb-3">

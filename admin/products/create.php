@@ -76,11 +76,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             </div>
             <div class="form-group mb-3">
                 <label>Price</label>
-                <input type="number" step="0.01" name="price" class="form-control" required>
+                <input type="number" min="0" step="0.01" name="price" class="form-control" required>
             </div>
             <div class="form-group mb-3">
                 <label>Stock</label>
-                <input type="number" name="stock" class="form-control" required>
+                <input type="number" min="0" name="stock" class="form-control" required>
             </div>
             <div class="form-group mb-3">
                 <label>Product Image</label>

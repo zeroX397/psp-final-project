@@ -14,6 +14,10 @@ $description = $_POST['description'] ?? '';
 $price = $_POST['price'] ?? 0;
 $stock = $_POST['stock'] ?? 0;
 
+if ($price < 0 || $stock < 0) {
+    die("Invalid input: price and stock must be >= 0.");
+}
+
 // Handle file upload
 $upload_dir = "../../../assets/img/products/";
 $image_name = null;
