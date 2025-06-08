@@ -1,5 +1,3 @@
-<!-- This is a template file for, well, template of course. Top navbar, db connection, layout, etc. 
- Please copy this file and remove this comment if you want to create a new page. -->
 <?php
 include 'connection.php';
 session_start();
@@ -11,7 +9,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> ... | Peaceful World</title>
+    <title> Start Shopping | Peaceful World</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -51,12 +49,11 @@ session_start();
                         <button class="btn btn-default">Login</button>
                     </a>
                 <?php endif; ?>
-
             </div>
         </div>
     </nav>
 
-
+    <!-- Body Shop -->
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"

@@ -1,5 +1,3 @@
-<!-- This is a template file for, well, template of course. Top navbar, db connection, layout, etc. 
- Please copy this file and remove this comment if you want to create a new page. -->
 <?php
 include 'connection.php';
 session_start();
@@ -15,7 +13,7 @@ if (isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Login | Lookup Martini</title>
+    <title> Login | Peaceful World</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -24,7 +22,7 @@ if (isset($_SESSION['user_id'])) {
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg bg-body-secondary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Lookup Martini</a>
+            <a class="navbar-brand" href="/">Peaceful World</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -34,7 +32,7 @@ if (isset($_SESSION['user_id'])) {
                         <a class="nav-link" href="/shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><em>Gak-tau-mau-diisi-apa</em></a>
+                        <a class="nav-link" href="/cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/about-us.php">About Us</a>

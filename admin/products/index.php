@@ -1,8 +1,13 @@
-<!-- This is a template file for, well, template of course. Top navbar, db connection, layout, etc. 
- Please copy this file and remove this comment if you want to create a new page. -->
 <?php
-include 'connection.php';
+include '../../connection.php';
+require_once("../../processes/admin/products/index.php");
 session_start();
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: /login.php");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +16,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> ... | Peaceful World</title>
+    <title> Admin | Products | Peaceful World</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -56,7 +61,41 @@ session_start();
         </div>
     </nav>
 
-
+    <!-- Body to add new products -->
+    <div class="container mt-5">
+        <h1>Product Management</h1>
+        <a href="/admin/" class="btn btn-secondary mb-3">← Back to Admin Home</a>
+        <a href="/admin/products/create.php" class="btn btn-primary mb-3">Add New Product</a>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($products as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['product_id']) ?></td>
+                        <td><?= htmlspecialchars($row['name']) ?></td>
+                        <td><img src="../../assets/img/products/<?= htmlspecialchars($row['image']) ?>"
+                                alt="<?= htmlspecialchars($row['name']) ?>" width="80"></td>
+                        <td>$<?= number_format($row['price'], 2) ?></td>
+                        <td><?= htmlspecialchars($row['stock']) ?></td>
+                        <td>
+                            <a href="edit.php?id=<?= $row['product_id'] ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="delete.php?id=<?= $row['product_id'] ?>" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"

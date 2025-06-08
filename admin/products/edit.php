@@ -1,5 +1,3 @@
-<!-- This is a template file for, well, template of course. Top navbar, db connection, layout, etc. 
- Please copy this file and remove this comment if you want to create a new page. -->
 <?php
 include '../../connection.php';
 session_start();
@@ -9,6 +7,27 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
+// Validate ID param
+$product_id = $_GET['id'] ?? '';
+if (!$product_id) {
+    die("Product ID is required.");
+}
+
+// Fetch the product
+$stmt = $conn->prepare("SELECT * FROM products WHERE product_id = ?");
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows !== 1) {
+    die("Product not found.");
+}
+
+$product = $result->fetch_assoc();
+
+$stmt->close();
+$conn->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +36,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Admin | ... | Peaceful World</title>
+    <title> Admin | Edit Products | Peaceful World</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -62,7 +81,43 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         </div>
     </nav>
 
+    <!-- Body Edit Form -->
+    <div class="container mt-5">
+        <h1>Edit Product</h1>
+        <a href="/admin/products/index.php" class="btn btn-secondary mb-3">← Back to Product List</a>
 
+        <form action="/processes/admin/products/edit.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="product_id" value="<?= htmlspecialchars($product['product_id']) ?>">
+
+            <div class="form-group mb-3">
+                <label>Product Name</label>
+                <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($product['name']) ?>"
+                    required>
+            </div>
+            <div class="form-group mb-3">
+                <label>Description</label>
+                <textarea rows="5" name="description"
+                    class="form-control"><?= htmlspecialchars($product['description']) ?></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label>Price</label>
+                <input type="number" step="0.01" name="price" class="form-control"
+                    value="<?= htmlspecialchars($product['price']) ?>" required>
+            </div>
+            <div class="form-group mb-3">
+                <label>Stock</label>
+                <input type="number" name="stock" class="form-control"
+                    value="<?= htmlspecialchars($product['stock']) ?>" required>
+            </div>
+            <div class="form-group mb-3">
+                <label>Current Image:</label><br>
+                <img src="../../assets/img/products/<?= htmlspecialchars($product['image']) ?>" width="100" alt="Product Image"><br><br>
+                <label>Change Image (optional)</label>
+                <input type="file" name="image" class="form-control" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary">Update Product</button>
+        </form>
+    </div>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"

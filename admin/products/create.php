@@ -1,8 +1,12 @@
-<!-- This is a template file for, well, template of course. Top navbar, db connection, layout, etc. 
- Please copy this file and remove this comment if you want to create a new page. -->
 <?php
-include 'connection.php';
+include '../../connection.php';
 session_start();
+
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+    header("Location: /login.php");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +15,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> ... | Peaceful World</title>
+    <title> Admin | Add New Product | Peaceful World</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -56,8 +60,35 @@ session_start();
         </div>
     </nav>
 
+    <!-- Body Insert New Items -->
+    <div class="container mt-5">
+        <h1>Add New Product</h1>
+        <a href="/admin/products/" class="btn btn-secondary mb-3">← Back to Product List</a>
 
-
+        <form action="/processes/admin/products/create.php" method="POST" enctype="multipart/form-data">
+            <div class="form-group mb-3">
+                <label>Product Name</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label>Description</label>
+                <textarea rows="5" name="description" class="form-control"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label>Price</label>
+                <input type="number" step="0.01" name="price" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label>Stock</label>
+                <input type="number" name="stock" class="form-control" required>
+            </div>
+            <div class="form-group mb-3">
+                <label>Product Image</label>
+                <input type="file" name="image" class="form-control" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
