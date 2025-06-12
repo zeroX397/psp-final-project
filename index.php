@@ -47,7 +47,7 @@ include 'connection.php'; // This is a must, if a page needs to connect to the d
                     <a href="/register.php">
                         <button class="btn btn-primary">Register</button>
                     </a>
-                    <a href="/login.php">
+                    <a href="login.php">
                         <button class="btn btn-default">Login</button>
                     </a>
                 <?php endif; ?>

@@ -49,7 +49,7 @@ if (isset($_SESSION['user_id'])) {
                     <a href="/register.php">
                         <button class="btn btn-primary">Register</button>
                     </a>
-                    <a href="/login.php">
+                    <a href="login.php">
                         <button class="btn btn-default">Login</button>
                     </a>
                 <?php endif; ?>
@@ -59,7 +59,7 @@ if (isset($_SESSION['user_id'])) {
     </nav>
 
     <!-- Start Login Form -->
-    <form action="/processes/login.php" method="POST" class="container mt-5">
+    <form action="processes/login.php" method="POST" class="container mt-5">
         <div class="form-group mb-3">
             <label>Username</label>
             <input type="text" name="username" class="form-control" placeholder="Username" required>
