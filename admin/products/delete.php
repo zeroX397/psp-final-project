@@ -36,7 +36,7 @@ if (file_exists($image_path)) {
 }
 
 // Delete the product
-$stmt = $conn->prepare("DELETE FROM products WHERE product_id = ?");
+$stmt = $conn->prepare("UPDATE products SET deleted_at = NOW() WHERE product_id = ?;");
 $stmt->bind_param("i", $product_id);
 
 if ($stmt->execute()) {

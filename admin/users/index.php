@@ -63,7 +63,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     <!-- Body users listing -->
     <div class="container mt-5">
         <h1>User Management</h1>
-        <a href="/admin/index.php" class="btn btn-secondary mb-3">← Back to Admin Home</a>
+        <a href="/admin/" class="btn btn-secondary mb-3">← Back to Admin Home</a>
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
@@ -84,7 +84,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <td><?= htmlspecialchars($row['role']) ?></td>
                         <td>
                             <?php if (!empty($row['profile_picture'])): ?>
-                                <img src="/uploads/<?= htmlspecialchars($row['profile_picture']) ?>" alt="Profile Picture"
+                                <img src="/uploads/<?= htmlspecialchars($row['profile_picture']) ?>" alt="No Profile Picture"
                                     width="50">
                             <?php else: ?>
                                 No image

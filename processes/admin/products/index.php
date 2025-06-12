@@ -2,7 +2,7 @@
 include("../../connection.php");
 
 // Fetch all products
-$sql = "SELECT * FROM products";
+$sql = "SELECT * FROM products WHERE deleted_at IS NULL";
 $result = $conn->query($sql);
 
 $products = [];

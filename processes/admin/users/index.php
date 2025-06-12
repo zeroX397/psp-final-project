@@ -2,7 +2,7 @@
 include "../../connection.php";
 
 // Fetch all users
-$sql = "SELECT * FROM users";
+$sql = "SELECT * FROM users WHERE deleted_at IS NULL";
 $result = $conn->query($sql);
 
 $users = [];
