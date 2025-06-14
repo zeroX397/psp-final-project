@@ -28,7 +28,7 @@ if (isset($_SESSION['user_id'])) {
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg bg-body-secondary">
         <div class="container-fluid">
-            <a class="navbar-brand" href=>Peaceful World</a>
+            <a class="navbar-brand" href="./">Peaceful World</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -41,8 +41,22 @@ if (isset($_SESSION['user_id'])) {
                         <a class="nav-link" href="cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about-us.php">About Us</a>
+                        <a class="nav-link" href="about.php">About Us</a>
                     </li>
+                    <!-- Check whether user is admin or not to show admin dropdown -->
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Admin Panel
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="admin/">Admin Panel</a></li>
+                                <li><a class="dropdown-item" href="products/">Products</a></li>
+                                <li><a class="dropdown-item" href="users">Users</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <span class="me-2">👋 Hello, <strong><?= htmlspecialchars($username) ?></strong></span>

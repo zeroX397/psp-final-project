@@ -28,7 +28,7 @@ if ($result->num_rows === 1) {
         } elseif ($user['role'] === 'staff') {
             header("Location: /staff");
         } else {
-            header("Location: ..admin/index.php");
+            header("Location: ../user/");
         }
         exit();
     } else {
