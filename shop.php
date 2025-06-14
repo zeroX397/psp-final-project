@@ -52,6 +52,43 @@ session_start();
             </div>
         </div>
     </nav>
+    
+<!-- Main Content Area with Dummy Data -->
+    <div class="container mt-4 mb-5">
+        <h1 class="text-center mb-4">Welcome to Our Dummy Shop!</h1>
+        <p class="text-center lead">Explore a collection of placeholder products generated for demonstration purposes.</p>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <?php
+            // Loop to generate 6 dummy product cards
+            for ($i = 1; $i <= 6; $i++) {
+                $productId = 100 + $i;
+                $productTitle = "Product Name " . $i;
+                $productPrice = "$" . rand(15, 150) . ".00";
+                $productDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ";
+                if ($i % 2 == 0) {
+                    $productDescription .= "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+                }
+            ?>
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img src="https://picsum.photos/id/<?php echo $productId; ?>/400/200" class="card-img-top" alt="Product Image <?php echo $i; ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo $productTitle; ?></h5>
+                            <p class="card-text text-muted">Category <?php echo chr(64 + ($i % 3) + 1); // A, B, C etc. ?></p>
+                            <p class="card-text flex-grow-1"><?php echo $productDescription; ?></p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="fw-bold fs-5"><?php echo $productPrice; ?></span>
+                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+    </div>
 
     <!-- Body Shop -->
 
