@@ -11,8 +11,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 // Get POST data
 $name = $_POST['name'] ?? '';
 $description = $_POST['description'] ?? '';
-$price = $_POST['price'] ?? 0;
-$stock = $_POST['stock'] ?? 0;
+$price = (double) $_POST['price'] ?? 0;
+$stock = (int) $_POST['stock'] ?? 0;
 
 if ($price < 0 || $stock < 0) {
     die("Invalid input: price and stock must be >= 0.");

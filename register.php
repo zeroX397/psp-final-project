@@ -22,7 +22,7 @@ session_start();
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/shop.php">Shop</a>
@@ -31,7 +31,7 @@ session_start();
                         <a class="nav-link" href="/cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/about-us.php">About Us</a>
+                        <a class="nav-link" href="/about.php">About Us</a>
                     </li>
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>

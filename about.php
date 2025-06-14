@@ -1,14 +1,8 @@
 <!-- This is a template file for, well, template of course. Top navbar, db connection, layout, etc. 
  Please copy this file and remove this comment if you want to create a new page. -->
 <?php
-include '../../connection.php';
+include 'connection.php';
 session_start();
-
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: /login.php");
-    exit();
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Admin | ... | Peaceful World</title>
+    <title> ... | Peaceful World</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -39,7 +33,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <a class="nav-link" href="/cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/about.php">About Us</a>
+                        <a class="nav-link active" href="/about.php">About Us</a>
                     </li>
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>

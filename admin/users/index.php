@@ -1,4 +1,8 @@
 <?php
+<<<<<<< HEAD
+=======
+require_once("../../processes/admin/users/index.php");
+>>>>>>> 16d0300c5734bf7165a3047e1500b57a221808e1
 session_start();
 include '../../connection.php';
 ?>
@@ -9,7 +13,11 @@ include '../../connection.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Users | Peaceful World Admin</title>
+=======
+    <title> Admin | Users | Peaceful World</title>
+>>>>>>> 16d0300c5734bf7165a3047e1500b57a221808e1
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -21,10 +29,25 @@ include '../../connection.php';
             <a class="navbar-brand" href="/">Peaceful World</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<<<<<<< HEAD
                     <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/admin/index.php">Admin Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="/cart.php">My Cart</a></li>
                     <li class="nav-item"><a class="nav-link" href="/about-us.php">About Us</a></li>
+=======
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/shop.php">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart.php">My Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about.php">About Us</a>
+                    </li>
+>>>>>>> 16d0300c5734bf7165a3047e1500b57a221808e1
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="/profile.php"><button class="btn btn-primary">Profile</button></a>
@@ -37,6 +60,7 @@ include '../../connection.php';
         </div>
     </nav>
 
+<<<<<<< HEAD
     <!-- User Table -->
     <div class="container mt-5">
         <h2>List of Users</h2>
@@ -44,10 +68,21 @@ include '../../connection.php';
             <thead class="table-light">
                 <tr>
                     <th>User ID</th>
+=======
+    <!-- Body users listing -->
+    <div class="container mt-5">
+        <h1>User Management</h1>
+        <a href="/admin/" class="btn btn-secondary mb-3">← Back to Admin Home</a>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+>>>>>>> 16d0300c5734bf7165a3047e1500b57a221808e1
                     <th>Username</th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Profile Picture</th>
+<<<<<<< HEAD
                     <th>Created At</th>
                 </tr>
             </thead>
@@ -56,6 +91,40 @@ include '../../connection.php';
             </tbody>
         </table>
     </div>
+=======
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($users as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['user_id']) ?></td>
+                        <td><?= htmlspecialchars($row['username']) ?></td>
+                        <td><?= htmlspecialchars($row['email']) ?></td>
+                        <td><?= htmlspecialchars($row['role']) ?></td>
+                        <td>
+                            <?php if (!empty($row['profile_picture'])): ?>
+                                <img src="/uploads/<?= htmlspecialchars($row['profile_picture']) ?>" alt="No Profile Picture"
+                                    width="50">
+                            <?php else: ?>
+                                No image
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <a href="edit.php?id=<?= $row['user_id'] ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="delete.php?id=<?= $row['user_id'] ?>" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
+>>>>>>> 16d0300c5734bf7165a3047e1500b57a221808e1
 
     <!-- Bootstrap & Script -->
     <script>

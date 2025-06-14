@@ -1,5 +1,5 @@
 <?php
-include '../../connection.php';
+// include '../../connection.php';
 require_once("../../processes/admin/products/index.php");
 session_start();
 
@@ -29,7 +29,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/shop.php">Shop</a>
@@ -38,7 +38,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <a class="nav-link" href="/cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/about-us.php">About Us</a>
+                        <a class="nav-link" href="/about.php">About Us</a>
                     </li>
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>
