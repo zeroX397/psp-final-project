@@ -27,13 +27,13 @@ include 'connection.php'; // This is a must, if a page needs to connect to the d
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/shop.php">Shop</a>
+                        <a class="nav-link" href="shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cart.php">My Cart</a>
+                        <a class="nav-link" href="cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/about.php">About Us</a>
+                        <a class="nav-link" href="about.php">About Us</a>
                     </li>
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>

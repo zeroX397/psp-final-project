@@ -30,10 +30,10 @@ include '../connection.php'; // This is a must, if a page needs to connect to th
                         <a class="nav-link" href="users/index.php">User</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cart.php">My Cart</a>
+                        <a class="nav-link" href="cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/about-us.php">About Us</a>
+                        <a class="nav-link" href="about-us.php">About Us</a>
                     </li>
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>
