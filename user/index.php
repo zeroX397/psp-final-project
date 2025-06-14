@@ -46,14 +46,14 @@ if (isset($_SESSION['user_id'])) {
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <span class="me-2">👋 Hello, <strong><?= htmlspecialchars($username) ?></strong></span>
-                    <a href="/profile.php">
+                    <a href="profile.php">
                         <button class="btn btn-primary">Profile</button>
                     </a>
-                    <a href="/logout.php">
+                    <a href="logout.php">
                         <button class="btn btn-danger">Logout</button>
                     </a>
                 <?php else: ?>
-                    <a href="/register.php">
+                    <a href="register.php">
                         <button class="btn btn-primary">Register</button>
                     </a>
                     <a href="login.php">
