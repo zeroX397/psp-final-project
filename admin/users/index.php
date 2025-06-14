@@ -1,8 +1,5 @@
 <?php
-<<<<<<< HEAD
-=======
 require_once("../../processes/admin/users/index.php");
->>>>>>> 16d0300c5734bf7165a3047e1500b57a221808e1
 session_start();
 include '../../connection.php';
 ?>
@@ -13,11 +10,7 @@ include '../../connection.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title>Users | Peaceful World Admin</title>
-=======
     <title> Admin | Users | Peaceful World</title>
->>>>>>> 16d0300c5734bf7165a3047e1500b57a221808e1
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -29,12 +22,6 @@ include '../../connection.php';
             <a class="navbar-brand" href="/">Peaceful World</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-<<<<<<< HEAD
-                    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin/index.php">Admin Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/cart.php">My Cart</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about-us.php">About Us</a></li>
-=======
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
@@ -47,7 +34,6 @@ include '../../connection.php';
                     <li class="nav-item">
                         <a class="nav-link" href="/about.php">About Us</a>
                     </li>
->>>>>>> 16d0300c5734bf7165a3047e1500b57a221808e1
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="/profile.php"><button class="btn btn-primary">Profile</button></a>
@@ -60,15 +46,6 @@ include '../../connection.php';
         </div>
     </nav>
 
-<<<<<<< HEAD
-    <!-- User Table -->
-    <div class="container mt-5">
-        <h2>List of Users</h2>
-        <table class="table table-bordered" id="userTable">
-            <thead class="table-light">
-                <tr>
-                    <th>User ID</th>
-=======
     <!-- Body users listing -->
     <div class="container mt-5">
         <h1>User Management</h1>
@@ -77,21 +54,10 @@ include '../../connection.php';
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
->>>>>>> 16d0300c5734bf7165a3047e1500b57a221808e1
                     <th>Username</th>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Profile Picture</th>
-<<<<<<< HEAD
-                    <th>Created At</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Rows will be populated by JavaScript -->
-            </tbody>
-        </table>
-    </div>
-=======
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -124,7 +90,6 @@ include '../../connection.php';
 </body>
 
 </html>
->>>>>>> 16d0300c5734bf7165a3047e1500b57a221808e1
 
     <!-- Bootstrap & Script -->
     <script>
