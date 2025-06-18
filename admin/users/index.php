@@ -51,7 +51,7 @@ include '../../connection.php';
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="/profile.php"><button class="btn btn-primary">Profile</button></a>
-                    <a href="/logout.php"><button class="btn btn-danger">Logout</button></a>
+                    <a href="../../logout.php"><button class="btn btn-danger">Logout</button></a>
                 <?php else: ?>
                     <a href="/register.php"><button class="btn btn-primary">Register</button></a>
                     <a href="/login.php"><button class="btn btn-default">Login</button></a>
@@ -63,7 +63,7 @@ include '../../connection.php';
     <!-- Body users listing -->
     <div class="container mt-5">
         <h1>User Management</h1>
-        <a href="/admin/" class="btn btn-secondary mb-3">← Back to Admin Home</a>
+        <a href="../" class="btn btn-secondary mb-3">← Back to Admin Home</a>
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>

@@ -54,7 +54,7 @@ include '../connection.php'; // This is a must, if a page needs to connect to th
                     <a href="profile.php">
                         <button class="btn btn-primary">Profile</button>
                     </a>
-                    <a href="logout.php">
+                    <a href="../../logout.php">
                         <button class="btn btn-danger">Logout</button>
                     </a>
                 <?php else: ?>

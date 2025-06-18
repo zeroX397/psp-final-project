@@ -63,7 +63,7 @@ if (isset($_SESSION['user_id'])) {
                     <a href="profile.php">
                         <button class="btn btn-primary">Profile</button>
                     </a>
-                    <a href="logout.php">
+                    <a href="../logout.php">
                         <button class="btn btn-danger">Logout</button>
                     </a>
                 <?php else: ?>

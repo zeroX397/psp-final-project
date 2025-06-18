@@ -24,7 +24,7 @@ if ($result->num_rows === 1) {
 
         // Redirect based on role
         if ($user['role'] === 'admin') {
-            header("Location: /admin");
+            header("Location: ../admin");
         } elseif ($user['role'] === 'staff') {
             header("Location: /staff");
         } else {
