@@ -22,20 +22,20 @@ if (isset($_SESSION['user_id'])) {
     <!-- Top Navigation Bar -->
     <nav class="navbar navbar-expand-lg bg-body-secondary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="./">Peaceful World</a>
+            <a class="navbar-brand" href="/">Peaceful World</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="./">Home</a>
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="shop.php">Shop</a>
+                        <a class="nav-link" href="/shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="cart.php">My Cart</a>
+                        <a class="nav-link" href="/cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.php">About Us</a>
+                        <a class="nav-link" href="/about.php">About Us</a>
                     </li>
                     <!-- Check whether user is admin or not to show admin dropdown -->
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
@@ -45,25 +45,25 @@ if (isset($_SESSION['user_id'])) {
                                 Admin Panel
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="admin/">Admin Panel</a></li>
-                                <li><a class="dropdown-item" href="products/">Products</a></li>
-                                <li><a class="dropdown-item" href="users">Users</a></li>
+                                <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
+                                <li><a class="dropdown-item" href="/admin/products">Products</a></li>
+                                <li><a class="dropdown-item" href="/admin/users">Users</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="profile.php">
+                    <a href="/user">
                         <button class="btn btn-primary">Profile</button>
                     </a>
-                    <a href="logout.php">
+                    <a href="/logout.php">
                         <button class="btn btn-danger">Logout</button>
                     </a>
                 <?php else: ?>
-                    <a href="register.php">
+                    <a href="/register.php">
                         <button class="btn btn-primary">Register</button>
                     </a>
-                    <a href="login.php">
+                    <a href="/login.php">
                         <button class="btn btn-default">Login</button>
                     </a>
                 <?php endif; ?>

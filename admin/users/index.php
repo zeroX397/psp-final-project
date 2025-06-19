@@ -1,7 +1,7 @@
 <?php
 require_once("../../processes/admin/users/index.php");
 session_start();
-include '../../connection.php';
+// include '../../connection.php';
 ?>
 
 <!DOCTYPE html>
@@ -19,20 +19,20 @@ include '../../connection.php';
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-body-secondary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="./">Peaceful World</a>
+            <a class="navbar-brand" href="/">Peaceful World</a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="./">Home</a>
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="shop.php">Shop</a>
+                        <a class="nav-link" href="/shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="cart.php">My Cart</a>
+                        <a class="nav-link" href="/cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.php">About Us</a>
+                        <a class="nav-link" href="/about.php">About Us</a>
                     </li>
                     <!-- Check whether user is admin or not to show admin dropdown -->
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
@@ -42,9 +42,9 @@ include '../../connection.php';
                                 Admin Panel
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="admin/">Admin Panel</a></li>
-                                <li><a class="dropdown-item" href="products/">Products</a></li>
-                                <li><a class="dropdown-item" href="users">Users</a></li>
+                                <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
+                                <li><a class="dropdown-item" href="/admin/products">Products</a></li>
+                                <li><a class="dropdown-item" href="/admin/users">Users</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>
@@ -52,9 +52,6 @@ include '../../connection.php';
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="/profile.php"><button class="btn btn-primary">Profile</button></a>
                     <a href="../../logout.php"><button class="btn btn-danger">Logout</button></a>
-                <?php else: ?>
-                    <a href="/register.php"><button class="btn btn-primary">Register</button></a>
-                    <a href="/login.php"><button class="btn btn-default">Login</button></a>
                 <?php endif; ?>
             </div>
         </div>
@@ -105,15 +102,15 @@ include '../../connection.php';
 
 </html>
 
-    <!-- Bootstrap & Script -->
-    <script>
-        fetch('../../processes/admin/db/get_user.php')
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.querySelector("#userTable tbody");
-                data.forEach(user => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
+<!-- Bootstrap & Script -->
+<script>
+    fetch('../../processes/admin/db/get_user.php')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector("#userTable tbody");
+            data.forEach(user => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
                         <td>${user.user_id}</td>
                         <td>${user.username}</td>
                         <td>${user.email}</td>
@@ -121,16 +118,16 @@ include '../../connection.php';
                         <td><img src="/assets/profile_pictures/${user.profile_picture}" width="50" height="50" class="rounded-circle" alt="profile picture"></td>
                         <td>${user.created_at}</td>
                     `;
-                    tbody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error("Failed to fetch user data:", error);
+                tbody.appendChild(row);
             });
-    </script>
+        })
+        .catch(error => {
+            console.error("Failed to fetch user data:", error);
+        });
+</script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
     </script>
 </body>
 
