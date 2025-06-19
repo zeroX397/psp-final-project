@@ -22,6 +22,9 @@ if ($result->num_rows === 1) {
         $_SESSION['role'] = $user['role'];
         $_SESSION['LAST_ACTIVITY'] = time();
 
+        // Load cart from database if user is logged in
+        loadCartFromDB($conn, $user['user_id']);
+
         // Redirect based on role
         if ($user['role'] === 'admin') {
             header("Location: ../admin");
@@ -42,5 +45,18 @@ if ($result->num_rows === 1) {
 }
 
 $stmt->close();
+
+function loadCartFromDB($conn, $userId) {
+    $_SESSION['cart'] = [];
+    $stmt = $conn->prepare("SELECT product_id, quantity FROM cart_items WHERE user_id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $_SESSION['cart'][$row['product_id']] = $row['quantity'];
+    }
+    $stmt->close();
+}
+
 $conn->close();
 exit();

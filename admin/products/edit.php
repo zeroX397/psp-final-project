@@ -55,7 +55,7 @@ $conn->close();
                         <a class="nav-link" href="/shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cart.php">My Cart</a>
+                        <a class="nav-link" href="/user/cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/about.php">About Us</a>
@@ -107,7 +107,7 @@ $conn->close();
                     class="form-control"><?= htmlspecialchars($product['description']) ?></textarea>
             </div>
             <div class="form-group mb-3">
-                <label>Price</label>
+                <label>Price (US$)</label>
                 <input type="number" min="0" step="0.01" name="price" class="form-control"
                     value="<?= htmlspecialchars($product['price']) ?>" required>
             </div>

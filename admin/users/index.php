@@ -29,7 +29,7 @@ session_start();
                         <a class="nav-link" href="/shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cart.php">My Cart</a>
+                        <a class="nav-link" href="/user/cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/about.php">About Us</a>

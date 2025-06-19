@@ -34,7 +34,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <a class="nav-link" href="/shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cart.php">My Cart</a>
+                        <a class="nav-link" href="/user/cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/about.php">About Us</a>
@@ -90,7 +90,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <td><?= htmlspecialchars($row['name']) ?></td>
                         <td><img src="../../assets/img/products/<?= htmlspecialchars($row['image']) ?>"
                                 alt="<?= htmlspecialchars($row['name']) ?>" width="80"></td>
-                        <td>$<?= number_format($row['price'], 2) ?></td>
+                        <td>US$<?= number_format($row['price'], 2) ?></td>
                         <td><?= htmlspecialchars($row['stock']) ?></td>
                         <td>
                             <a href="edit.php?id=<?= $row['product_id'] ?>" class="btn btn-warning btn-sm">Edit</a>

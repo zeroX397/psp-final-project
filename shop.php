@@ -1,7 +1,22 @@
 <?php
-include 'connection.php';
+require_once 'connection.php';  // adjust path if needed
 session_start();
 
+// Fetch all active products in random order
+$sql = "SELECT product_id, name, price, stock, image
+        FROM products
+        WHERE deleted_at IS NULL
+        ORDER BY RAND()";
+$result = $conn->query($sql);
+
+// Capture products into an array
+$products = [];
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $products[] = $row;
+    }
+}
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +44,7 @@ session_start();
                         <a class="nav-link active" href="/shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/cart.php">My Cart</a>
+                        <a class="nav-link" href="/user/cart.php">My Cart</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/about.php">About Us</a>
@@ -67,45 +82,48 @@ session_start();
             </div>
         </div>
     </nav>
-    
-<!-- Main Content Area with Dummy Data -->
-    <div class="container mt-4 mb-5">
-        <h1 class="text-center mb-4">Welcome to Our Dummy Shop!</h1>
-        <p class="text-center lead">Explore a collection of placeholder products generated for demonstration purposes.</p>
 
+    <!-- Shop Content -->
+    <div class="container mt-4 mb-5">
+        <h1 class="text-center mb-4">Our Products</h1>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            <?php
-            // Loop to generate 6 dummy product cards
-            for ($i = 1; $i <= 6; $i++) {
-                $productId = 100 + $i;
-                $productTitle = "Product Name " . $i;
-                $productPrice = "$" . rand(15, 150) . ".00";
-                $productDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ";
-                if ($i % 2 == 0) {
-                    $productDescription .= "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-                }
-            ?>
+            <?php if (empty($products)): ?>
                 <div class="col">
-                    <div class="card shadow-sm">
-                        <img src="https://picsum.photos/id/<?php echo $productId; ?>/400/200" class="card-img-top" alt="Product Image <?php echo $i; ?>">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $productTitle; ?></h5>
-                            <p class="card-text text-muted">Category <?php echo chr(64 + ($i % 3) + 1); // A, B, C etc. ?></p>
-                            <p class="card-text flex-grow-1"><?php echo $productDescription; ?></p>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="fw-bold fs-5"><?php echo $productPrice; ?></span>
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                    <div class="alert alert-info">No products available at the moment.</div>
+                </div>
+            <?php else: ?>
+                <?php foreach ($products as $p): ?>
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <img src="/assets/img/products/<?= htmlspecialchars($p['image']) ?>" class="card-img-top"
+                                alt="<?= htmlspecialchars($p['name']) ?>">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title"><?= htmlspecialchars($p['name']) ?></h5>
+                                <p class="card-text fw-bold mb-2">$<?= number_format($p['price'], 2) ?></p>
+                                <p class="card-text text-muted mb-4">
+                                    Stock: <?= (int) $p['stock'] ?>
+                                </p>
+                                <div class="mt-auto d-flex justify-content-between">
+                                    <a href="product-detail.php?id=<?= $p['product_id'] ?>"
+                                        class="btn btn-outline-primary btn-sm">
+                                        View
+                                    </a>
+                                    <form action="/processes/cart-add.php" method="POST" class="d-inline">
+                                        <input type="hidden" name="product_id" value="<?= $p['product_id'] ?>">
+                                        <input type="hidden" name="qty" value="1">
+                                        <button type="submit" class="btn btn-primary btn-sm" <?= $p['stock'] < 1 ? 'disabled' : '' ?>>
+                                            Add to Cart
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php
-            }
-            ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 
-    <!-- Body Shop -->
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
