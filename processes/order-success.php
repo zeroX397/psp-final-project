@@ -35,7 +35,8 @@ $order = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
 if (!$order) {
-    echo '<h3 class="text-danger text-center mt-5">Order not found or access denied</h3>';
+    http_response_code(404);
+    include '../404.php';
     exit();
 }
 

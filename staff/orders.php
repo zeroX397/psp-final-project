@@ -67,6 +67,7 @@ $statusOptions = getEnumValues($conn, 'orders', 'status');
     <title>Homepage | Peaceful World</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -127,7 +128,7 @@ $statusOptions = getEnumValues($conn, 'orders', 'status');
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container-fluid mt-4">
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -138,6 +139,7 @@ $statusOptions = getEnumValues($conn, 'orders', 'status');
                     <th>Status</th>
                     <th>Total</th>
                     <th>Action</th>
+                    <th>Invoice</th>
                 </tr>
             </thead>
             <tbody>
@@ -161,6 +163,9 @@ $statusOptions = getEnumValues($conn, 'orders', 'status');
                                 </select>
                                 <button class="btn btn-sm btn-primary">Update</button>
                             </form>
+                        </td>
+                        <td><a href="/order-pdf.php?id=<?= $row['order_id'] ?>" class="btn btn-sm btn-outline-danger"><i
+                                    class="bi bi-file-earmark-pdf"></i>PDF</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>

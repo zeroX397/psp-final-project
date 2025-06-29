@@ -36,6 +36,7 @@ $result = $stmt->get_result();
     <title>Orders History | Peaceful World</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -68,7 +69,9 @@ $result = $stmt->get_result();
                                 <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
                                 <li><a class="dropdown-item" href="/admin/products">Products</a></li>
                                 <li><a class="dropdown-item" href="/admin/users">Users</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li><a class="dropdown-item" href="/staff">Staff Area</a></li>
                                 <li><a class="dropdown-item" href="/staff/orders.php">All Orders</a></li>
                             </ul>
@@ -104,6 +107,7 @@ $result = $stmt->get_result();
                     <th>Amount</th>
                     <th>Status</th>
                     <th>Paid At</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -116,6 +120,8 @@ $result = $stmt->get_result();
                         <td><?= $row['payment_date'] ?? '-' ?></td>
                         <td>
                             <a href="order-detail.php?id=<?= $row['order_id'] ?>" class="btn btn-sm btn-info">View</a>
+                            <a href="/order-pdf.php?id=<?= $row['order_id'] ?>" class="btn btn-sm btn-outline-danger"><i
+                                    class="bi bi-file-earmark-pdf"></i>Download PDF</a>
                         </td>
                     </tr>
                 <?php endwhile; ?>

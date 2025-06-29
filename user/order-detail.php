@@ -24,7 +24,8 @@ $order = $orderResult->fetch_assoc();
 $stmt->close();
 
 if (!$order) {
-    echo "Order not found or access denied.";
+    http_response_code(404);
+    include '../404.php';
     exit();
 }
 
