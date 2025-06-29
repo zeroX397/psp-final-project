@@ -60,7 +60,7 @@ $result = $stmt->get_result();
                         <a class="nav-link" href="/about.php">About Us</a>
                     </li>
                     <!-- Check whether user is admin or not to show admin dropdown -->
-                    <?php if (isset($_SESSION['user_id']) || in_array($_SESSION['role'], ['staff', 'admin'])): ?>
+                    <?php if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['admin', 'staff'])): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
@@ -100,6 +100,9 @@ $result = $stmt->get_result();
     </nav>
 
     <div class="container mt-4">
+        <img src="/assets/img/profilepic/<?php echo htmlspecialchars($_SESSION['profile_picture'] ?? 'default.png'); ?>"
+            alt="<?php echo htmlspecialchars($_SESSION['username'] ?? 'User'); ?>'s profile picture"
+            style="max-width: 100px; height: auto; border-radius: 50%;"><br>
         <h1>Hello, <?= htmlspecialchars($username) ?>!</h1>
         <h2>Recent Transactions</h2>
         <table class="table">

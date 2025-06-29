@@ -34,7 +34,7 @@ session_start();
                         <a class="nav-link" href="/about.php">About Us</a>
                     </li>
                     <!-- Check whether user is admin or not to show admin dropdown -->
-                    <?php if (isset($_SESSION['user_id']) || in_array($_SESSION['role'], ['staff', 'admin'])): ?>
+                    <?php if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['admin', 'staff'])): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
