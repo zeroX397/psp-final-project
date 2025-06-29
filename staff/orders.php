@@ -1,21 +1,61 @@
-<!-- This is a template file for, well, template of course. Top navbar, db connection, layout, etc. 
- Please copy this file and remove this comment if you want to create a new page. -->
 <?php
+include '../connection.php';
 session_start();
-include '../connection.php'; // Database connection
 
-$username = '';
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-    $query = "SELECT username FROM users WHERE user_id = $user_id";
-    $result = mysqli_query($conn, $query);
-    if ($row = mysqli_fetch_assoc($result)) {
-        $username = $row['username'];
-    }
-} else {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['staff', 'admin'])) {
     header("Location: /login.php");
     exit();
 }
+
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'], $_POST['status'])) {
+    $orderId = (int) $_POST['order_id'];
+    $newStatus = $_POST['status'];
+    $approvedBy = $_SESSION['user_id'];
+
+    $stmt = $conn->prepare("UPDATE orders SET status = ?, approved_by = ? WHERE order_id = ?");
+    $stmt->bind_param("sii", $newStatus, $approvedBy, $orderId);
+    $stmt->execute();
+    $stmt->close();
+
+    header("Location: orders.php");
+    exit();
+}
+
+// Fetch all orders
+$result = $conn->query("
+    SELECT o.*, u.username AS customer_name
+    FROM orders o
+    JOIN users u ON o.user_id = u.user_id
+    ORDER BY o.order_date DESC
+");
+
+function getEnumValues($conn, $table, $column)
+{
+    $sql = "SHOW COLUMNS FROM `$table` WHERE Field = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $column);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    $type = $result['Type'] ?? '';
+    preg_match("/^enum\((.*)\)$/", $type, $matches);
+    $vals = [];
+
+    if (!empty($matches[1])) {
+        $vals = array_map(function ($v) {
+            return trim($v, "'");
+        }, explode(",", $matches[1]));
+    }
+
+    return $vals;
+}
+
+$statusOptions = getEnumValues($conn, 'orders', 'status');
+
+
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +99,9 @@ if (isset($_SESSION['user_id'])) {
                                 <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
                                 <li><a class="dropdown-item" href="/admin/products">Products</a></li>
                                 <li><a class="dropdown-item" href="/admin/users">Users</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <li><a class="dropdown-item" href="/staff">Staff Area</a></li>
                                 <li><a class="dropdown-item" href="/staff/orders.php">All Orders</a></li>
                             </ul>
@@ -67,7 +109,6 @@ if (isset($_SESSION['user_id'])) {
                     <?php endif; ?>
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <span class="me-2">👋 Hello, <strong><?= htmlspecialchars($username) ?></strong></span>
                     <a href="/user">
                         <button class="btn btn-primary">Profile</button>
                     </a>
@@ -87,7 +128,44 @@ if (isset($_SESSION['user_id'])) {
     </nav>
 
     <div class="container mt-4">
-        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>User</th>
+                    <th>Address</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= $row['order_id'] ?></td>
+                        <td><?= htmlspecialchars($row['customer_name']) ?></td>
+                        <td><?= htmlspecialchars($row['address']) ?></td>
+                        <td><?= $row['order_date'] ?></td>
+                        <td><?= $row['status'] ?></td>
+                        <td>$<?= number_format($row['total_amount'], 2) ?></td>
+                        <td>
+                            <form method="POST" class="d-flex">
+                                <input type="hidden" name="order_id" value="<?= $row['order_id'] ?>">
+                                <select name="status" class="form-select me-2">
+                                    <?php foreach ($statusOptions as $status): ?>
+                                        <option value="<?= $status ?>" <?= $row['status'] === $status ? 'selected' : '' ?>>
+                                            <?= ucfirst($status) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <button class="btn btn-sm btn-primary">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"

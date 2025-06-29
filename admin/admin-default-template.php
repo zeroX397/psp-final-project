@@ -52,6 +52,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                                 <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
                                 <li><a class="dropdown-item" href="/admin/products">Products</a></li>
                                 <li><a class="dropdown-item" href="/admin/users">Users</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/staff">Staff Area</a></li>
+                                <li><a class="dropdown-item" href="/staff/orders.php">All Orders</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>

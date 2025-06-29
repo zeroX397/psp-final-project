@@ -96,7 +96,7 @@ $totalPrice = 0;
                         <a class="nav-link" href="/about.php">About Us</a>
                     </li>
                     <!-- Check whether user is admin or not to show admin dropdown -->
-                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                    <?php if (isset($_SESSION['user_id']) || in_array($_SESSION['role'], ['staff', 'admin'])): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
@@ -106,6 +106,9 @@ $totalPrice = 0;
                                 <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
                                 <li><a class="dropdown-item" href="/admin/products">Products</a></li>
                                 <li><a class="dropdown-item" href="/admin/users">Users</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/staff">Staff Area</a></li>
+                                <li><a class="dropdown-item" href="/staff/orders.php">All Orders</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>
@@ -136,63 +139,61 @@ $totalPrice = 0;
         <?php if (empty($cartProducts)): ?>
             <div class="alert alert-info">Your cart is empty. <a href="shop.php">Shop now</a>.</div>
         <?php else: ?>
-            <form action="cart.php" method="POST">
-                <table class="table align-middle">
-                    <thead class="table-dark">
+            <table class="table align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($cartProducts as $id => $p):
+                        $qty = $cart[$id];
+                        $sub = $qty * $p['price'];
+                        $totalPrice += $sub;
+                        ?>
                         <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Subtotal</th>
-                            <th>Action</th>
+                            <td><img src="/assets/img/products/<?= htmlspecialchars($p['image']) ?>" width="60" class="me-2">
+                                <?= htmlspecialchars($p['name']) ?></td>
+                            <td>US$ <?= number_format($p['price'], 0, ',', '.') ?></td>
+                            <td>
+                                <form method="POST" action="cart.php" class="d-flex">
+                                    <input type="number" name="quantity" value="<?= $qty ?>" min="1" max="<?= $p['stock'] ?>"
+                                        class="form-control me-2" style="width: 70px;">
+                                    <input type="hidden" name="product_id" value="<?= $id ?>">
+                                    <input type="hidden" name="action" value="update_quantity">
+                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                </form>
+                            </td>
+
+                            <td>US$ <?= number_format($sub, 0, ',', '.') ?></td>
+                            <td>
+                                <form method="POST" action="cart.php">
+                                    <input type="hidden" name="product_id" value="<?= $id ?>">
+                                    <input type="hidden" name="action" value="remove_item">
+                                    <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($cartProducts as $id => $p):
-                            $qty = $cart[$id];
-                            $sub = $qty * $p['price'];
-                            $totalPrice += $sub;
-                            ?>
-                            <tr>
-                                <td><img src="/assets/img/products/<?= htmlspecialchars($p['image']) ?>" width="60"
-                                        class="me-2">
-                                    <?= htmlspecialchars($p['name']) ?></td>
-                                <td>US$ <?= number_format($p['price'], 0, ',', '.') ?></td>
-                                <td>
-                                    <div class="d-flex">
-                                        <input type="number" name="quantity" value="<?= $qty ?>" min="1"
-                                            max="<?= $p['stock'] ?>" class="form-control me-2" style="width: 70px;">
-                                        <input type="hidden" name="product_id" value="<?= $id ?>">
-                                        <input type="hidden" name="action" value="update_quantity">
-                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                                    </div>
-                                </td>
-                                <td>US$ <?= number_format($sub, 0, ',', '.') ?></td>
-                                <td>
-                                    <form method="POST" action="cart.php">
-                                        <input type="hidden" name="product_id" value="<?= $id ?>">
-                                        <input type="hidden" name="action" value="remove_item">
-                                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="3" class="text-end">Total</th>
-                            <th colspan="2">US$ <?= number_format($totalPrice, 0, ',', '.') ?></th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </form>
+                    <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3" class="text-end">Total</th>
+                        <th colspan="2">US$ <?= number_format($totalPrice, 0, ',', '.') ?></th>
+                    </tr>
+                </tfoot>
+            </table>
 
             <div class="d-flex justify-content-between mt-3">
                 <form method="POST" action="cart.php">
                     <input type="hidden" name="action" value="clear_cart">
                     <button type="submit" class="btn btn-warning">Clear Cart</button>
                 </form>
-                <a href="checkout.php" class="btn btn-success">Proceed to Checkout</a>
+                <a href="/checkout.php" class="btn btn-success">Proceed to Checkout</a>
             </div>
         <?php endif; ?>
     </div>

@@ -1,10 +1,30 @@
 <?php
-include 'connection.php';
 session_start();
+include '../connection.php'; // Database connection
+
+$username = '';
 if (isset($_SESSION['user_id'])) {
-    header("Location: /user");
+    $user_id = $_SESSION['user_id'];
+    $query = "SELECT username FROM users WHERE user_id = $user_id";
+    $result = mysqli_query($conn, $query);
+    if ($row = mysqli_fetch_assoc($result)) {
+        $username = $row['username'];
+    }
+} else {
+    header("Location: /login.php");
+    exit();
 }
 
+$stmt = $conn->prepare("
+    SELECT o.order_id, o.order_date, o.total_amount, o.status, t.payment_date
+    FROM orders o
+    LEFT JOIN transactions t ON o.order_id = t.order_id
+    WHERE o.user_id = ?
+    ORDER BY o.order_date DESC
+");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +33,7 @@ if (isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Login | Peaceful World</title>
+    <title>Orders History | Peaceful World</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -26,7 +46,7 @@ if (isset($_SESSION['user_id'])) {
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/shop.php">Shop</a>
@@ -59,7 +79,7 @@ if (isset($_SESSION['user_id'])) {
                     <a href="/user">
                         <button class="btn btn-primary">Profile</button>
                     </a>
-                    <a href="/logout.php">
+                    <a href="../logout.php">
                         <button class="btn btn-danger">Logout</button>
                     </a>
                 <?php else: ?>
@@ -70,27 +90,43 @@ if (isset($_SESSION['user_id'])) {
                         <button class="btn btn-default">Login</button>
                     </a>
                 <?php endif; ?>
-
             </div>
         </div>
     </nav>
 
-    <!-- Start Login Form -->
-    <form action="processes/login.php" method="POST" class="container mt-5">
-        <div class="form-group mb-3">
-            <label>Username</label>
-            <input type="text" name="username" class="form-control" placeholder="Username" required>
-        </div>
-        <div class="form-group mb-3">
-            <label>Password</label>
-            <input type="password" name="password" class="form-control" placeholder="Password" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+    <div class="container mt-4">
+        <h1>Orders History</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Order Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Paid At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= $row['order_id'] ?></td>
+                        <td><?= $row['order_date'] ?></td>
+                        <td>$<?= number_format($row['total_amount'], 2) ?></td>
+                        <td><?= $row['payment_method'] ?? 'Pending' ?></td>
+                        <td><?= $row['payment_date'] ?? '-' ?></td>
+                        <td>
+                            <a href="order-detail.php?id=<?= $row['order_id'] ?>" class="btn btn-sm btn-info">View</a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+        <a href="/user/" class="btn btn-link">Back to profile</a>
+    </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
+        </script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
-    </script>
 
 </html>

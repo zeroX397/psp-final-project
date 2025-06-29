@@ -29,7 +29,7 @@ if ($result->num_rows === 1) {
         if ($user['role'] === 'admin') {
             header("Location: ../admin");
         } elseif ($user['role'] === 'staff') {
-            header("Location: /staff");
+            header("Location: ../staff");
         } else {
             header("Location: ../user/");
         }

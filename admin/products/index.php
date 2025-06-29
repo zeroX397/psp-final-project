@@ -40,7 +40,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                         <a class="nav-link" href="/about.php">About Us</a>
                     </li>
                     <!-- Check whether user is admin or not to show admin dropdown -->
-                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                    <?php if (isset($_SESSION['user_id']) || in_array($_SESSION['role'], ['staff', 'admin'])): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
@@ -50,6 +50,9 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
                                 <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
                                 <li><a class="dropdown-item" href="/admin/products">Products</a></li>
                                 <li><a class="dropdown-item" href="/admin/users">Users</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/staff">Staff Area</a></li>
+                                <li><a class="dropdown-item" href="/staff/orders.php">All Orders</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>

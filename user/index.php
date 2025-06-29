@@ -10,7 +10,22 @@ if (isset($_SESSION['user_id'])) {
     if ($row = mysqli_fetch_assoc($result)) {
         $username = $row['username'];
     }
+} else {
+    header("Location: /login.php");
+    exit();
 }
+
+$stmt = $conn->prepare("
+    SELECT o.order_id, o.order_date, o.total_amount, o.status, t.payment_date
+    FROM orders o
+    LEFT JOIN transactions t ON o.order_id = t.order_id
+    WHERE o.user_id = ?
+    ORDER BY o.order_date DESC
+    LIMIT 5
+");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +34,7 @@ if (isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage | Peaceful World</title>
+    <title>User Page | Peaceful World</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
 </head>
@@ -44,7 +59,7 @@ if (isset($_SESSION['user_id'])) {
                         <a class="nav-link" href="/about.php">About Us</a>
                     </li>
                     <!-- Check whether user is admin or not to show admin dropdown -->
-                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                    <?php if (isset($_SESSION['user_id']) || in_array($_SESSION['role'], ['staff', 'admin'])): ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
@@ -54,6 +69,9 @@ if (isset($_SESSION['user_id'])) {
                                 <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
                                 <li><a class="dropdown-item" href="/admin/products">Products</a></li>
                                 <li><a class="dropdown-item" href="/admin/users">Users</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/staff">Staff Area</a></li>
+                                <li><a class="dropdown-item" href="/staff/orders.php">All Orders</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>
@@ -79,12 +97,36 @@ if (isset($_SESSION['user_id'])) {
     </nav>
 
     <div class="container mt-4">
-        <h1>Welcome to Peaceful World!</h1>
+        <h1>Hello, <?= htmlspecialchars($username) ?>!</h1>
+        <h2>Recent Transactions</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Order Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Paid At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= $row['order_id'] ?></td>
+                        <td><?= $row['order_date'] ?></td>
+                        <td>$<?= number_format($row['total_amount'], 2) ?></td>
+                        <td><?= $row['payment_method'] ?? 'Pending' ?></td>
+                        <td><?= $row['payment_date'] ?? '-' ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+        <a href="/user/orders.php" class="btn btn-link">View All Transactions</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
-    </script>
+        </script>
 </body>
 
 </html>

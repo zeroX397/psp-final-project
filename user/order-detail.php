@@ -1,32 +1,54 @@
-<!-- This is a template file for, well, template of course. Top navbar, db connection, layout, etc. 
- Please copy this file and remove this comment if you want to create a new page. -->
 <?php
 session_start();
-include '../connection.php'; // Database connection
+require_once '../connection.php';
 
-$username = '';
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-    $query = "SELECT username FROM users WHERE user_id = $user_id";
-    $result = mysqli_query($conn, $query);
-    if ($row = mysqli_fetch_assoc($result)) {
-        $username = $row['username'];
-    }
-} else {
+if (!isset($_SESSION['user_id'])) {
     header("Location: /login.php");
     exit();
 }
+
+$orderId = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$userId = $_SESSION['user_id'];
+
+// Ambil data order + validasi apakah milik user
+$stmt = $conn->prepare("
+    SELECT o.order_id, o.order_date, o.address, o.status, o.total_amount, t.payment_date
+    FROM orders o
+    LEFT JOIN transactions t ON o.order_id = t.order_id
+    WHERE o.order_id = ? AND o.user_id = ?
+");
+$stmt->bind_param("ii", $orderId, $userId);
+$stmt->execute();
+$orderResult = $stmt->get_result();
+$order = $orderResult->fetch_assoc();
+$stmt->close();
+
+if (!$order) {
+    echo "Order not found or access denied.";
+    exit();
+}
+
+// Ambil detail produk dalam order ini
+$stmt = $conn->prepare("
+    SELECT od.product_id, od.quantity, od.price_at_purchase, p.name
+    FROM order_details od
+    JOIN products p ON od.product_id = p.product_id
+    WHERE od.order_id = ?
+");
+$stmt->bind_param("i", $orderId);
+$stmt->execute();
+$detailsResult = $stmt->get_result();
+$details = $detailsResult->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage | Peaceful World</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <title>Order #<?= $order['order_id'] ?> Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -67,7 +89,6 @@ if (isset($_SESSION['user_id'])) {
                     <?php endif; ?>
                 </ul>
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <span class="me-2">👋 Hello, <strong><?= htmlspecialchars($username) ?></strong></span>
                     <a href="/user">
                         <button class="btn btn-primary">Profile</button>
                     </a>
@@ -85,14 +106,39 @@ if (isset($_SESSION['user_id'])) {
             </div>
         </div>
     </nav>
+    <div class="container py-4">
 
-    <div class="container mt-4">
-        
+        <h2>Order #<?= $order['order_id'] ?></h2>
+        <p><strong>Order Date:</strong> <?= $order['order_date'] ?></p>
+        <p><strong>Address:</strong> <?= htmlspecialchars($order['address']) ?></p>
+        <p><strong>Payment Method:</strong> <?= $order['status'] ?? 'Pending' ?></p>
+        <p><strong>Paid At:</strong> <?= $order['payment_date'] ?? '-' ?></p>
+        <p><strong>Total:</strong> US$ <?= number_format($order['total_amount'], 2) ?></p>
+
+        <h4 class="mt-4">Items</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price per item</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($details as $item): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($item['name']) ?></td>
+                        <td><?= $item['quantity'] ?></td>
+                        <td>US$ <?= number_format($item['price_at_purchase'], 2) ?></td>
+                        <td>US$ <?= number_format($item['quantity'] * $item['price_at_purchase'], 2) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <a href="/user/orders.php" class="btn btn-secondary">Back to Orders</a>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous">
-        </script>
 </body>
 
 </html>
